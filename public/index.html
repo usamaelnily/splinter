@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Twitter Live Stream Demo</title>
+    <link href="stylesheets/vendor/bootstrap-1.1.1.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="javascripts/application.js"></script>
+    <script>
+      var socket = io.connect('http://localhost:3000');
+
+      socket.on('tweets', function(data) {
+        var tweets = data.tweets;
+        var html = '';
+        for(var i=0; i < tweets.length; i++) {
+          var text = replaceURLWithHTMLLinks(tweets[i].text);
+          text     = linkfyTwitterHandles(text);
+          html += '<li class="well">' + text + '</li>';
+        }
+        $('#tweets').prepend(html);
+      });
+
+      
+    </script>
+    <style>
+      ul#tweets {padding: 0; margin: 0;}
+      ul#tweets li {list-style: none}
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="hero-unit">
+        <h1>Twitter Live Stream Demo</h1>
+        <p>This is a sample app to demonstrate the power of <a href="#">Node.js</a>, <a href="#">Express.js</a>, and <a href="#">Socket.io</a></p>
+      </div>
+      <section>
+        <ul id="tweets">
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>
